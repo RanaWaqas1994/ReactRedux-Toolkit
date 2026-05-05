@@ -1,0 +1,553 @@
+<!-- Bilkul — tumhare current setup ke hisaab se ek simple working Vite + React + Redux Toolkit cart counter ka complete structure de raha hoon.
+
+Folder structure
+src/
+ ├─ redux/
+ │   ├─ store.js
+ │   └─ slice.js
+ │
+ ├─ components/
+ │   ├─ Header.jsx
+ │   ├─ Cart.jsx
+ │   └─ Product.jsx
+ │
+ ├─ App.jsx
+ └─ main.jsx
+src/redux/slice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  value: 0
+};
+
+const cart = createSlice({
+  name: "cart",
+  initialState,
+  reducers: {
+    addItem: (state) => {
+      state.value += 1;
+    }
+  }
+});
+
+export const { addItem } = cart.actions;
+export default cart.reducer;
+src/redux/store.js
+import { configureStore } from "@reduxjs/toolkit";
+import cartReducer from "./slice";
+
+const store = configureStore({
+  reducer: {
+    cart: cartReducer
+  }
+});
+
+export default store;
+src/main.jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+import { Provider } from "react-redux";
+import store from "./redux/store";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+src/components/Cart.jsx
+import React from "react";
+import { useSelector } from "react-redux";
+
+export default function Cart() {
+  const count = useSelector((state) => state.cart.value);
+
+  return (
+    <div>
+      🛒 Cart <span>{count}</span>
+    </div>
+  );
+}
+src/components/Header.jsx
+import React from "react";
+import Cart from "./Cart";
+
+export default function Header() {
+  return (
+    <header
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "20px",
+        background: "#111",
+        color: "#fff"
+      }}
+    >
+      <h2>My Shop</h2>
+
+      <Cart />
+    </header>
+  );
+}
+src/components/Product.jsx
+import React from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../redux/slice";
+
+export default function Product() {
+  const dispatch = useDispatch();
+
+  return (
+    <div style={{ padding: "30px" }}>
+      <h2>Wireless Headphones</h2>
+      <p>Rs. 5,999</p>
+
+      <button onClick={() => dispatch(addItem())}>
+        Add to Cart
+      </button>
+    </div>
+  );
+}
+src/App.jsx
+import React from "react";
+import Header from "./components/Header";
+import Product from "./components/Product";
+
+export default function App() {
+  return (
+    <div>
+      <Header />
+      <Product />
+    </div>
+  );
+}
+Ab actual flow kya hoga?
+Start
+
+Store mein:
+
+{
+  cart: {
+    value: 0
+  }
+}
+
+Header mein dikhega:
+
+Cart 0
+Button click
+
+Product.jsx
+
+dispatch(addItem())
+Redux reducer chalega
+
+slice.js
+
+state.value += 1
+Store update
+{
+  cart: {
+    value: 1
+  }
+}
+Cart.jsx dobara render
+
+useSelector new value uthayega.
+
+Header mein dikhega:
+
+Cart 1 -->
+
+
+<!-- Core In Long -->
+
+<!-- Main Goal of the Project Product header cart me bhejna ha tw redux use hoge -->
+
+<!-- Project ka goal
+
+Tumhare paas 3 components hain:
+
+Header
+Cart
+Product
+
+Kaam yeh hai:
+
+Product ke button par click ho → cart count header mein barhe
+
+Iske liye Redux Toolkit use kar rahe ho.
+
+Step 1 — Redux folder banana
+
+Tum ne ek folder banaya, for example:
+
+src/redux/
+
+Uske andar 2 files:
+
+store.js
+slice.js
+
+Bilkul sahi.
+
+Step 2 — slice.js ka kaam kya hai?
+
+Yahan tum state ka logic likhte ho.
+
+Matlab:
+
+initial value kya hogi
+kaun kaun se actions honge
+state kaise change hogi
+
+Tumhara code:
+
+import { createSlice } from '@reduxjs/toolkit'
+
+const initialState = {
+  value: 0
+}
+
+const cart = createSlice({
+  name: 'cart',
+  initialState,
+  reducers: {
+    addItem: (state) => {
+      state.value += 1;
+    }
+  }
+})
+
+export const { addItem } = cart.actions;
+export default cart.reducer;
+Is mein kya ho raha hai?
+initialState
+
+Yeh store ki starting value hai.
+
+{
+  value: 0
+}
+
+Matlab cart shuru mein empty hai.
+
+reducers
+
+Yahan functions hote hain jo state ko update karte hain.
+
+Tumhara:
+
+addItem: (state) => {
+  state.value += 1;
+}
+
+Yahan jo state hai:
+
+yeh current state hoti hai
+
+Agar current value 0 hai aur button click hua, to:
+
+0 → 1
+
+Phir dobara click:
+
+1 → 2
+export const { addItem } = cart.actions
+
+Yeh action creator export karta hai.
+
+Matlab baad mein tum yeh kar sakte ho:
+
+dispatch(addItem())
+export default cart.reducer
+
+Yeh reducer export karta hai.
+
+Is reducer ko store mein dena hota hai.
+
+Step 3 — store.js ka kaam
+
+Store poori app ka central data house hai.
+
+Tumhara code:
+
+import { configureStore } from "@reduxjs/toolkit";
+import cartReducer from './slice'
+
+const store = configureStore({
+  reducer: {
+    cart: cartReducer
+  }
+});
+
+export default store;
+Yahan kya hua?
+
+Tum ne bola:
+
+cart: cartReducer
+
+Matlab app ka global state aise ban gaya:
+
+{
+  cart: {
+    value: 0
+  }
+}
+
+Yeh structure bohat important hai.
+
+Step 4 — App ko Redux se connect karna
+
+Ab main.jsx mein store ko poori app ko dena hota hai.
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+import { Provider } from "react-redux";
+import store from "./redux/store";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+Provider kya karta hai?
+
+Simple:
+
+“Ab poori app Redux store use kar sakti hai.”
+
+Iske baghair useDispatch aur useSelector kaam nahi karenge.
+
+Step 5 — Product.jsx
+
+Ab button click par action bhejna hai.
+
+import React from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../redux/slice";
+
+export default function Product() {
+  const dispatch = useDispatch();
+
+  return (
+    <button
+      className="btn"
+      onClick={() => dispatch(addItem())}
+    >
+      Add to Cart
+    </button>
+  );
+}
+Yahan flow kya hai?
+useDispatch()
+
+Redux ko action bhejne ke liye.
+
+const dispatch = useDispatch()
+Button click hone par
+dispatch(addItem())
+
+Matlab:
+
+Redux ko bolo addItem chalao
+
+Redux phir kya karta hai?
+
+slice.js ke andar yeh chalata hai:
+
+state.value += 1
+Step 6 — Cart.jsx
+
+Ab updated data dikhana hai.
+
+import React from "react";
+import { useSelector } from "react-redux";
+
+export default function Cart() {
+  const selector = useSelector((state) => state.cart.value);
+
+  return (
+    <div className="cart">
+      🛒 Cart <span className="cart-count">{selector}</span>
+    </div>
+  );
+}
+useSelector kya karta hai?
+
+Store se data nikalta hai.
+
+Store ka structure yaad hai?
+
+{
+  cart: {
+    value: 0
+  }
+}
+
+To:
+
+state.cart.value
+
+Matlab:
+
+state = poora Redux store
+cart = reducer ka naam
+value = actual count
+Full flow — start se end tak
+Shuru mein
+
+Store:
+
+{
+  cart: {
+    value: 0
+  }
+}
+
+Header mein dikhega:
+
+Cart 0
+User button click karta hai
+
+Product.jsx
+
+dispatch(addItem())
+Redux action receive karta hai
+
+slice.js
+
+state.value += 1
+
+Store ban gaya:
+
+{
+  cart: {
+    value: 1
+  }
+}
+Cart.jsx dobara render hota hai
+
+useSelector nayi value nikalta hai:
+
+1
+
+Header mein ab dikhega:
+
+Cart 1
+Ek important correction
+
+Tum ne likha tha:
+
+dispatch(addItem(1))
+
+Yeh bhi chal sakta hai, lekin abhi zaroorat nahi.
+
+Kyunkay tumhare reducer mein payload use nahi ho raha.
+
+Abhi simple yeh rakho:
+
+dispatch(addItem())
+Sabse short yaad rakhne wali baat
+slice.js
+
+Logic hota hai
+
+store.js
+
+Global data ka ghar
+
+Provider
+
+App ko store deta hai
+
+useDispatch
+
+Data change karta hai
+
+useSelector
+
+Data read karta hai -->
+
+<!-- END -->
+
+
+
+
+
+
+
+<!-- In Short -->
+
+Bilkul — short aur seedha.
+
+Tumne kya banaya?
+Product component → button hai
+Cart component → count dikhata hai
+slice.js → count barhane ka logic
+store.js → sab data ki central jagah
+Simple flow
+1. slice.js
+
+Yahan starting value rakhi:
+
+value: 0
+
+Aur function banaya:
+
+addItem
+
+Iska kaam:
+
+state.value += 1
+
+Matlab cart count 1 barhao.
+
+2. store.js
+
+Yahan tumne slice ko register kiya.
+
+Matlab Redux ko bola:
+
+cart ka data yahan rakho
+
+3. main.jsx
+
+Provider se poori app ko store diya.
+
+Matlab:
+
+ab har component Redux use kar sakta hai
+
+4. Product.jsx
+
+Button click pe:
+
+dispatch(addItem())
+
+Matlab:
+
+Redux ko bolo count barha do
+
+5. Cart.jsx
+
+Yahan:
+
+useSelector((state) => state.cart.value)
+
+Matlab:
+
+Redux store se current count nikaalo
+
+Ek line mein poora system
+button click → dispatch → reducer chalega → store update hoga → cart dubara render hoga
+Sabse easy yaad rakhne wali baat
+useDispatch = data change karna
+useSelector = data dekhna
+
+Bas itna samajh lo, Redux ka base clear ho gaya.
+<!-- End -->

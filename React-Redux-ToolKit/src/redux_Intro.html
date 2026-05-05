@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/React-Redux-ToolKit/public/favicon.svg" />
+  <title>React Redux + Redux Toolkit Basics</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      padding: 30px;
+      max-width: 900px;
+      margin: auto;
+      color: #222;
+    }
+
+    h1, h2, h3 {
+      color: #111;
+      margin-top: 28px;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    ul {
+      margin: 10px 0 10px 20px;
+    }
+
+    pre {
+      background: #f3f3f3;
+      padding: 14px;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid #ddd;
+    }
+
+    code {
+      font-family: Consolas, monospace;
+      color: #c7254e;
+    }
+
+    .flow {
+      background: #f9f9f9;
+      padding: 12px;
+      border-left: 4px solid #999;
+      margin: 12px 0;
+    }
+    img{
+        width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+    <h1>App Setup</h1>
+    <img src="/React-Redux-ToolKit/redux-toolkit-setup-3.PNG" alt="">
+    <img src="/React-Redux-ToolKit//redux-toolkit-setup-store-3.PNG" alt="">
+    <h2>Store:</h2>
+    <p> jo bhi apka data jo redux ke through flow karta ha wo store ke andar e store hota ha </p>
+
+    <img src="/React-Redux-ToolKit/redux-toolkit-setup-provider-3.PNG" alt="">
+    <h2>Provider:</h2>
+    <p>Jese react store me koi data ha wo wapis react component me chahiye tw wo "Provider" ke
+        Zariye e aye ga
+    </p>
+    <h2>Slice:</h2>
+    <p>Slice 2 cheezo ka combination hoti ha <br>
+        1) <strong>Action:</strong>    <br>
+        <p>apki application(React App) se data leta ha take hum usko redux ke store me store karwa payen</p>
+        2) <strong>Reducer:</strong>  <br>
+        <p>Reducer apke store ko update rakhta ha mtlb <br>
+        apne action se koi deta liya 20 user ka or usmese 5 user delete kardiye tw "Reducer"
+        us kaam ko kare ga or phr "Redux Store" ko update kardega.
+        <p>Simple words: Redux Store ko update karne ka kaam Reducer karta ha</p>
+        <h2>Main Flow of Redux data to Component</h2>
+        <p>"Jo data store hota ha hamara wo Redux Store me hota ha <br>
+        Provider Wapis se hamare store (react app/store) me hamare data ko provide karta ha <br>
+        Action React ke data ko leta ha or <br>
+        Reducer ko pass kar deta ha take hum store ko update kar payen."  <br>
+        <strong>That is the main Flow. </strong>
+        <p>Action or Reducer dono 1 hi cheez me atye han or wo ha Slice <br>
+        agr hum "Redux simple" use karte to hume alehda file banani parhni thi "Action" or "Reducer" ki<br>
+    Agr hum "Redux ToolKit" use karte han tw dono(Action/Reducer) ke liye 1 e file bane ge that is "Slice"   </p>
+        </p>
+    </p>
+
+    </p>
+    
+
+
+  <h1>React Redux + Redux Toolkit Basic Explanation</h1>
+
+  <h2>React mein problem kya hoti hai?</h2>
+  <p>
+    Maan lo tumhare app mein <strong>user</strong>, <strong>cart</strong>,
+    <strong>theme</strong>, <strong>login state</strong> waghera hain.
+  </p>
+
+  <p>
+    Agar yeh data har component mein alag alag bhejna pade,
+    to code messy ho jata hai.
+  </p>
+
+  <p>Yahin par <strong>Redux</strong> ka kaam aata hai.</p>
+
+  <h2>Redux kya hota hai?</h2>
+  <p>
+    <strong>Redux ek central store hota hai</strong>
+    jahan app ka common data rakha jata hai.
+  </p>
+
+  <p>Socho:</p>
+
+  <ul>
+    <li>React components = rooms</li>
+    <li>Redux store = ek central cupboard</li>
+  </ul>
+
+  <p>
+    Har component us cupboard se data le sakta hai aur update bhi kar sakta hai.
+  </p>
+
+  <h2>Redux ke 3 basic parts</h2>
+
+  <h3>1. Store</h3>
+  <p>Jahan data rehta hai.</p>
+
+  <pre><code>{
+  count: 0
+}</code></pre>
+
+  <h3>2. Action</h3>
+  <p>Batata hai kya kaam karna hai.</p>
+
+  <pre><code>{
+  type: "increment"
+}</code></pre>
+
+  <h3>3. Reducer</h3>
+  <p>Actual mein state change karta hai.</p>
+
+  <pre><code>if(action.type === "increment"){
+   state.count += 1
+}</code></pre>
+
+  <h2>Simple Flow</h2>
+
+  <div class="flow">
+    Component button click <br />
+    → action dispatch hoti hai <br />
+    → reducer run hota hai <br />
+    → store update hota hai <br />
+    → UI re-render hoti hai
+  </div>
+
+  <h2>Redux Toolkit kya hai?</h2>
+
+  <p>
+    Pehle Redux mein bohat boilerplate hota tha.
+  </p>
+
+  <p>
+    <strong>Redux Toolkit (RTK)</strong> Redux ka easy version hai.
+  </p>
+
+  <ul>
+    <li>kam code likhna padta hai</li>
+    <li>cleaner hota hai</li>
+    <li>official recommended way hai</li>
+  </ul>
+
+  <p>Aaj kal <strong>Redux = mostly Redux Toolkit</strong></p>
+
+  <h2>Sabse basic example</h2>
+
+  <h3>Install</h3>
+
+  <pre><code>npm install @reduxjs/toolkit react-redux</code></pre>
+
+  <h2>Step 1 — Slice banana</h2>
+
+  <p><code>features/counterSlice.js</code></p>
+
+  <pre><code>import { createSlice } from "@reduxjs/toolkit";
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: {
+    count: 0
+  },
+  reducers: {
+    increment: (state) => {
+      state.count += 1;
+    },
+    decrement: (state) => {
+      state.count -= 1;
+    }
+  }
+});
+
+export const { increment, decrement } = counterSlice.actions;
+export default counterSlice.reducer;</code></pre>
+
+  <h2>Yeh kya hua?</h2>
+
+  <p><code>createSlice</code> se mil gaya:</p>
+
+  <ul>
+    <li>reducer</li>
+    <li>actions</li>
+  </ul>
+
+  <p>Matlab alag alag files ki zarurat nahi.</p>
+
+  <h2>Step 2 — Store banana</h2>
+
+  <p><code>app/store.js</code></p>
+
+  <pre><code>import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "../features/counterSlice";
+
+export const store = configureStore({
+  reducer: {
+    counter: counterReducer
+  }
+});</code></pre>
+
+  <h2>Step 3 — App ko provider dena</h2>
+
+  <p><code>main.jsx</code></p>
+
+  <pre><code>import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+import { Provider } from "react-redux";
+import { store } from "./app/store";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  &lt;Provider store={store}&gt;
+    &lt;App /&gt;
+  &lt;/Provider&gt;
+);</code></pre>
+
+  <h2>Provider kya karta hai?</h2>
+
+  <p>
+    Yeh React ko bolta hai:
+    <strong>“Redux store ab poori app mein available hai.”</strong>
+  </p>
+
+  <h2>Step 4 — Component mein use karna</h2>
+
+  <p><code>App.jsx</code></p>
+
+  <pre><code>import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement } from "./features/counterSlice";
+
+export default function App() {
+  const count = useSelector((state) => state.counter.count);
+  const dispatch = useDispatch();
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;{count}&lt;/h1&gt;
+
+      &lt;button onClick={() => dispatch(increment())}&gt;
+        Increment
+      &lt;/button&gt;
+
+      &lt;button onClick={() => dispatch(decrement())}&gt;
+        Decrement
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+  <h2>Yeh 2 hooks bohat important hain</h2>
+
+  <h3>useSelector</h3>
+
+  <p>Store se data nikalta hai.</p>
+
+  <pre><code>const count = useSelector((state) => state.counter.count);</code></pre>
+
+  <p>Matlab store ke andar:</p>
+
+  <pre><code>{
+  counter: {
+    count: 0
+  }
+}</code></pre>
+
+  <h3>useDispatch</h3>
+
+  <p>Action bhejta hai.</p>
+
+  <pre><code>dispatch(increment())</code></pre>
+
+  <h2>Sabse important baat</h2>
+
+  <p>Redux Toolkit mein normally yeh 4 cheezein hoti hain:</p>
+
+  <ul>
+    <li><strong>Slice</strong> → logic hota hai</li>
+    <li><strong>Store</strong> → data ka ghar</li>
+    <li><strong>Provider</strong> → app ko store deta hai</li>
+    <li><strong>Hooks</strong> → useSelector aur useDispatch</li>
+  </ul>
+
+  <h2>Real life example</h2>
+
+  <p>Agar tum login app banao:</p>
+
+  <pre><code>{
+  user: {
+    name: "Waqas",
+    isLoggedIn: true
+  }
+}</code></pre>
+
+  <p>
+    Phir app ke kisi bhi page se user ka data mil jayega.
+  </p>
+
+  <h2>Sabse short summary</h2>
+
+  <pre><code>Redux = global state management
+Redux Toolkit = Redux ka easy version
+
+createSlice = logic
+configureStore = store
+Provider = app ko connect
+useSelector = data lena
+useDispatch = data update karna</code></pre>
+
+<hr>
+<hr>
+<hr>
+
+ <h1>Redux aur Redux Toolkit</h1>
+
+  <h2>Sabse pehle React mein masla kya hota hai?</h2>
+
+  <p>Maan lo tumhare paas 3 components hain:</p>
+
+  <ul>
+    <li>Navbar</li>
+    <li>Profile</li>
+    <li>Dashboard</li>
+  </ul>
+
+  <p>Aur user ka naam <strong>Waqas</strong> hai.</p>
+
+  <p>
+    Ab agar Profile mein user ka naam hai aur Navbar mein bhi dikhana hai,
+    to React mein aksar parent se props bhejne padte hain.
+  </p>
+
+  <pre><code>App → Dashboard → Profile → Navbar</code></pre>
+
+  <p>
+    Yeh baar baar data pass karna <strong>prop drilling</strong> kehlata hai.
+  </p>
+
+  <h2>Redux isi problem ka solution hai</h2>
+
+  <p>
+    <strong>Redux ek central jagah hai jahan common data rakha jata hai.</strong>
+  </p>
+
+  <p>Jaise ghar mein ek almari ho.</p>
+
+  <p>Har component apna data us almari se le sakta hai.</p>
+
+  <p>Example:</p>
+
+  <pre><code>{
+  userName: "Waqas"
+}</code></pre>
+
+  <p>Ab:</p>
+
+  <ul>
+    <li>Navbar bhi le sakta hai</li>
+    <li>Profile bhi le sakta hai</li>
+    <li>Dashboard bhi le sakta hai</li>
+  </ul>
+
+  <p>Bina parent ke through ghumaye.</p>
+
+  <h2>Ek simple real example</h2>
+
+  <p>Normal React mein:</p>
+
+  <pre><code>&lt;App user="Waqas" /&gt;</code></pre>
+
+  <p>Phir App se child, child se next child…</p>
+
+  <p>Lekin Redux mein sab directly store se lete hain.</p>
+
+  <h2>Ab Redux Toolkit kya hai?</h2>
+
+  <p>Pehle purana Redux use karte the.</p>
+
+  <p>Usmein bohat zyada code likhna padta tha.</p>
+
+  <p>
+    <strong>Redux Toolkit wahi Redux hai, lekin easy version.</strong>
+  </p>
+
+  <p>
+    Matlab: <strong>Redux Toolkit = Redux ko simple bana diya gaya hai</strong>
+  </p>
+
+  <p>Aaj kal mostly sab log Redux Toolkit hi use karte hain.</p>
+
+  <h2>Bas yeh 2 baatein samjho</h2>
+
+  <h3>1. Store</h3>
+
+  <p>Store matlab <strong>data rakhne ki jagah</strong></p>
+
+  <pre><code>{
+  count: 0
+}</code></pre>
+
+  <h3>2. Component data le ya badal sakta hai</h3>
+
+  <p>Agar button click ho:</p>
+
+  <pre><code>count: 0</code></pre>
+
+  <p>Button dabaya:</p>
+
+  <pre><code>count: 1</code></pre>
+
+  <h2>Real code dekho</h2>
+
+  <h3>Step 1 — slice banta hai</h3>
+
+  <pre><code>import { createSlice } from "@reduxjs/toolkit";
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: {
+    count: 0
+  },
+  reducers: {
+    increment: (state) => {
+      state.count += 1;
+    }
+  }
+});
+
+export const { increment } = counterSlice.actions;
+export default counterSlice.reducer;</code></pre>
+
+  <p>Ab iska simple matlab:</p>
+
+  <h3>initialState</h3>
+
+  <p>Shuru mein value kya hai</p>
+
+  <pre><code>count = 0</code></pre>
+
+  <h3>increment</h3>
+
+  <p>Ye function bol raha hai:</p>
+
+  <div class="box">
+    button dabao → count 1 barha do
+  </div>
+
+  <h2>Ab component mein</h2>
+
+  <pre><code>const count = useSelector((state) => state.counter.count);</code></pre>
+
+  <p>Iska matlab:</p>
+
+  <div class="box">
+    store se count nikaalo
+  </div>
+
+  <pre><code>dispatch(increment())</code></pre>
+
+  <p>Iska matlab:</p>
+
+  <div class="box">
+    increment wala kaam chalao
+  </div>
+
+  <h2>Simple flow</h2>
+
+  <p>Maan lo button dabaya. Kya hota hai?</p>
+
+  <h3>Step 1</h3>
+
+  <pre><code>dispatch(increment())</code></pre>
+
+  <p>Matlab:</p>
+
+  <div class="box">
+    “Redux, count badha do”
+  </div>
+
+  <h3>Step 2</h3>
+
+  <p>Redux andar ye chalata hai:</p>
+
+  <pre><code>state.count += 1</code></pre>
+
+  <h3>Step 3</h3>
+
+  <p>UI khud update ho jati hai.</p>
+
+  <h2>Bas ek chhota example</h2>
+
+  <p>Store mein:</p>
+
+  <pre><code>count = 0</code></pre>
+
+  <p>Screen pe:</p>
+
+  <pre><code>0</code></pre>
+
+  <p>Button click:</p>
+
+  <pre><code>dispatch(increment())</code></pre>
+
+  <p>Store ban gaya:</p>
+
+  <pre><code>count = 1</code></pre>
+
+  <p>Screen pe ab:</p>
+
+  <pre><code>1</code></pre>
+
+  <h2>Ek line mein samjho</h2>
+
+  <h3>Redux</h3>
+  <p>App ka <strong>shared data</strong> rakhta hai.</p>
+
+  <h3>Redux Toolkit</h3>
+  <p>Redux ko <strong>easy tareeqe se use karne ka modern way</strong> hai.</p>
+
+  <h2>Sabse simple yaad rakhne wali baat</h2>
+
+  <h3>useSelector</h3>
+
+  <p>Data <strong>nikalne ke liye</strong></p>
+
+  <pre><code>const count = useSelector(...)</code></pre>
+
+  <h3>dispatch</h3>
+
+  <p>Data <strong>change karne ke liye</strong></p>
+
+  <pre><code>dispatch(increment())</code></pre>
+<hr>
+<hr>
+<hr>
+  <h1>Lecture: 4 Make Redux Toolkit Flow (RTK Flow Explained) #redux</h1>
+  <img src="/React-Redux-ToolKit/redux-toolkit-flow-4.PNG" alt="">
+
+  // Intial value le gain pehle or phr createSlice banayen ge uske andar e reducers atye han
+//reducer ke andar e fucntion rehte han jese addItem(action ha) abh iske andar jo parameter ha wo state
+// rehta ha (yeah state kya ha) is function ke andar value pass karain ge. yeah wase hamara 
+// 1 function ha abh uske andar 1 increment karain ge
+//Yeah sab karne ke bad is Action ko export karna ha addItem ko like below:
+
+export const {addItem} = cart.actions;
+
+//or iske bad reducer bhi mile ga iske andar abh data store ha 
+
+export default cart.reducer
+
+// jo reducer ko petch karna parhe ga "Store.js" ke sath
+
+import cartReducer from './slice'
+
+const store = configureStore({
+  reducer: {
+    //This is petch from slice.js file(Top pe import bhi karna ha)
+    cart: cartReducer
+  }
+});
+
+//abh cart wale ko directly call ni kar sakte isko dispatch karna parhta ha like
+const dispatch = useDispatch()
+useDispatch import bhi karna ha "Product.jsx" me  bcz button pe click hoke data
+dispatch hoga cart component me.
+yeah addItem bhi khud ba khud import hoga top pe jo neche button par araha ha.
+
+<!-- 
+<button className="btn" onClick={() => dispatch(addItem(1))}> Add to Cart </button>
+ -->
+
+abh cart.jsx me jayen ge bcz hume data header pe show karwana ha tw 
+//jo store ke andar data nikalana ha "useSelector" se nikaal sakte han like:
+
+<!-- import { useSelector } from "react-redux"
+
+export default function Cart() {
+    const selector = useSelector((state)=> state.cart.value)
+    console.log(selector);
+    
+  return (
+      <div className="cart">
+        🛒 Cart <span className="cart-count"> {selector} </span>
+      </div>
+
+  )
+} -->
+
+<hr>
+<hr>
+<hr>
+  <h1>Lecture: 5 Remove Data from Redux Store | Remove Item & Clear Cart</h1>
+  <img src="/React-Redux-ToolKit/redux-toolkit-removeData-from-store-5.PNG" alt="">
+
+
+
+
+</body>
+</html>
