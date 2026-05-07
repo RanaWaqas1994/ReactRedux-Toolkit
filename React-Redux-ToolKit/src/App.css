@@ -523,3 +523,126 @@
 }
 
 /* End */
+
+
+/* New Cart page CSS */
+
+.cart-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background: #f5f5f5;
+}
+
+.cart-box {
+  width: 800px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* TOP HEADER */
+.cart-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* ITEM ROW */
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* LEFT SIDE */
+.cart-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.cart-left img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-info h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.cart-info p {
+  margin: 0;
+  font-size: 13px;
+  color: gray;
+}
+
+/* RIGHT SIDE */
+.cart-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* ⭐ INPUT FIX */
+.cart-right input {
+  width: 70px;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+/* BUTTON + PRICE */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.actions h4 {
+  margin: 0;
+}
+
+.actions button {
+  padding: 6px 10px;
+  border: none;
+  background: red;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* FOOTER */
+.cart-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* EMPTY STATE */
+.empty-cart {
+  text-align: center;
+  padding: 30px;
+  color: gray;
+}
+
+button.btn-green {
+    background: green;
+    color: white;
+    border: navajowhite;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
