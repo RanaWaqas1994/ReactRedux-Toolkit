@@ -2,14 +2,15 @@
 //jo action hotye han unko ap UI se kese call karsakte ho "Usedispatch" Hook ki help se
 
 import { useSelector } from "react-redux"
+import { Link } from "react-router-dom";
 
 export default function Cart() {
-    const selector = useSelector((state)=> state.cart.value)
-    console.log(selector);
+    const Cartselector = useSelector((state)=> state.cart.items);
+    console.log(Cartselector.length,"Cart Js");
     
   return (
       <div className="cart">
-        🛒 Cart <span className="cart-count"> {selector} </span>
+      <Link to="/cart"> 🛒 Cart <span className="cart-count"> {Cartselector.length?Cartselector.length:0} </span></Link>
       </div>
 
   )

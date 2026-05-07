@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="/React-Redux-ToolKit/public/favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
   <title>React Redux + Redux Toolkit Basics</title>
   <style>
     body {
@@ -55,12 +55,12 @@
 <body>
 
     <h1>App Setup</h1>
-    <img src="/React-Redux-ToolKit/redux-toolkit-setup-3.PNG" alt="">
-    <img src="/React-Redux-ToolKit//redux-toolkit-setup-store-3.PNG" alt="">
+    <img src="/redux-toolkit-setup-3.PNG" alt="">
+    <img src="//redux-toolkit-setup-store-3.PNG" alt="">
     <h2>Store:</h2>
     <p> jo bhi apka data jo redux ke through flow karta ha wo store ke andar e store hota ha </p>
 
-    <img src="/React-Redux-ToolKit/redux-toolkit-setup-provider-3.PNG" alt="">
+    <img src="/redux-toolkit-setup-provider-3.PNG" alt="">
     <h2>Provider:</h2>
     <p>Jese react store me koi data ha wo wapis react component me chahiye tw wo "Provider" ke
         Zariye e aye ga
@@ -564,7 +564,7 @@ export default counterSlice.reducer;</code></pre>
 <hr>
 <hr>
   <h1>Lecture: 4 Make Redux Toolkit Flow (RTK Flow Explained) #redux</h1>
-  <img src="/React-Redux-ToolKit/redux-toolkit-flow-4.PNG" alt="">
+  <img src="/redux-toolkit-flow-4.PNG" alt="">
 
   // Intial value le gain pehle or phr createSlice banayen ge uske andar e reducers atye han
 //reducer ke andar e fucntion rehte han jese addItem(action ha) abh iske andar jo parameter ha wo state
@@ -620,10 +620,162 @@ export default function Cart() {
 <hr>
 <hr>
   <h1>Lecture: 5 Remove Data from Redux Store | Remove Item & Clear Cart</h1>
-  <img src="/React-Redux-ToolKit/redux-toolkit-removeData-from-store-5.PNG" alt="">
+  <img src="/redux-toolkit-removeData-from-store-5.PNG" alt="">
+<hr>
+<hr>
+<hr>
+<h1>Lecture: 6 API Call with Redux Toolkit in React</h1>
+<img src="/redux-toolkit-API-Call-6.PNG" alt="">
+ 1)sabse pehle new slice banaye ge Redux ke andar
+ 2)after that "API" call karain ge "Redux ToolKit" ke andar phr dekhain ge kya kya flow rehta ha hamara.
+ 3)Reducer ko Store ke andar Add kar dain ge
+ 4)API ko Call karain ge hamare product wale component ke load ke upar(Yeah jese load hoga hamari API
+ Call ho jaye ge) 
+
+ When we call API we need to call "CreateAsyncThunk"
+Interview Questions:
+Async operations kese karte han Redux ToolKit ke sath me ya API kese call karte han?
+Ans:
+Hume CreateAsyncThunk function ka use karna partha ha yeah middleware hota
+jo async operation ko perform karne ke kam ata ha.
+
+<hr>
+<hr>
+<hr>
+<h1>Lecture: 7 API Call with Redux Toolkit add Mapping Now in React</h1>
+<img src="/redux-toolkit-API-Call-Mapping-7.PNG" alt="">
+<!-- The below code is for Map the Product API: -->
+    <!-- <div className="grid">
+      {
+        ProductSelector.length && ProductSelector.map((item)=>(
+          <div className="card" key={item.id}>
+            <img src={item.thumbnail} alt="Product" />
+            <div className="content">
+              <div className="title">{item.title}</div>
+              <div className="brand">{item.brand}</div>
+              <div className="price">{item.price}</div>
+              <div className="rating">{item.rating}</div>
+              <button className="btn btn-cart" >Add to Cart</button>
+
+            </div>
+
+          </div>
+        ))
+      }
+
+    </div> -->
+    <hr>
+    <hr>
+    <hr>
+<h1>Lecture: 8 Add To Cart Product with Redux toolkit</h1>
+<img src="/redux-toolkit-Add-to-cart-Product-8.PNG" alt="">
+jo upar picture me points diye han us tarhan kaam karna ha
+Interview Questions: UI component se data lekar redux ke store me store karwana ho 
+tw kese store karwa sakte ho?
+Ans:
+Data push karo ge asye:
+
+state.items.push(action.payload)
+
+example:
+
+addItem:(state,action)=>{
+        
+    console.log(action.payload);
+    asye data push karo ge
+    state.items.push(action.payload)
+            
+},
+<hr>
+<hr>
+<h1>Lecture: 9 Persist Cart Data & Remove Cart with Redux Toolkit</h1>
+<img src="/redux-toolkit-Persist-Cart-Data-Remove-Cart-9.PNG" alt="">
+
+Persist mean data ko store karke rakhna 
+yaha hum local storage ka use karain ge take agr user refresh kare phr bhi data store rahe.
+2 options 
+ap log local storage use karlo ya
+redux Presist ki library ati ha wo bhi kar sakte han(zayda library use krne ki zarort ni)
+
+1)
+local storage me data save karne se pehle apko usye "Stringify"karna parhe ga
+  localStorage.setItem('cart',JSON.stringify(state.items))
+  abh data localStorageme ja chuka ha
+  abh refresh pe cart pe save rahe tw uske liye hum kya karain ge
+2)
+items: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')): []
+agar browser ke localStorage mein cart pada hai to usko nikaal lo, warna empty array le lo. 
+OR
+Agar localStorage mein cart hai to usay use karo, warna empty list se start karo
+
+⚠️ Important point
+
+localStorage hamesha string return karta hai.
+
+Is liye:
+
+JSON.parse(...)
+
+use karna zaroori hai taake string → array/object ban jaye.
+
+🧠 Ek line mein
+items: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')): []
+
+localStorage se cart uthao:  "(localStorage.getItem('cart'))"
+ → agar hai to parse karo:   "JSON.parse(localStorage.getItem('cart'))" 
+ → warna empty array rakho:  ": []"
+
+ Abh cart me bi ho gaya
+
+ Abh Remove ka kaam ha:
+
+         removeItem: (state, action) => {
+            //    state.value > 0 ? state.value-=1:null
+            const cartData = state.items.filter(item => item.id != action.payload.id);
+            state.items = cartData;
+            localStorage.setItem('cart',JSON.stringify(cartData))
+        },
+Interview Questions:
+ITEM ko filter out kese karo ge:
+ANS:
+const cartData = state.items.filter(item => item.id != action.payload.id);
+
+data ko remove kese karo ge:
+ANS:
+         removeItem: (state, action) => {
+            //    state.value > 0 ? state.value-=1:null
+            const cartData = state.items.filter(item => item.id != action.payload.id);
+            state.items = cartData;
+            localStorage.setItem('cart',JSON.stringify(cartData))
+        },
+data ko Presist kese karo ge:
+ANS:
+const initialState = {
+    // value: 0 
+    // items: []
+    items: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : []
+}
+
+<hr>
+<hr>
+<h1>Lecture: 10 Add Routing and Make Page with Redux Toolkit</h1>
+<img src="/redux-toolkit-Add Routing and Make Page-10.PNG" alt="">
+import Routing 
+then BrowserRouter 
+then Routes 
+then Route yani link banate han
+then header links me jake waha Link tag laga ke link dedo
+<hr>
+<hr>
 
 
+<h1>Lecture: 11 Cart Item Listing with Redux Toolkit</h1>
+<img src="/redux-toolkit-Cart Item Listing-11.PNG" alt="">
+<hr>
+<hr>
 
+<h1>Lecture: 12 Add Quantity with Cart Items with Redux Toolkit</h1>
+<img src="/redux-toolkit- Add Quantity with Cart Items-12.PNG" alt="">
 
 </body>
 </html>

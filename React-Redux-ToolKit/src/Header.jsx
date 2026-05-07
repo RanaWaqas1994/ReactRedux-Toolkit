@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Cart from "./Cart";
 
 export default function Header() {
@@ -10,9 +11,10 @@ export default function Header() {
       </div>
 
       <nav className="nav">
-        <a href="#">Home</a>
+        <Link to="/" >Home</Link>
+        {/* <a href="#">Home</a>
         <a href="#">Products</a>
-        <a href="#">About</a>
+        <a href="#">About</a> */}
       </nav>
 
     <Cart/>

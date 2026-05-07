@@ -7,26 +7,40 @@
 // jo reducer ko petch karna parhe ga "Store.js" ke sath
 
 import { createSlice } from '@reduxjs/toolkit'
-const initialState= {
-    value: 0 
+
+const initialState = {
+    // value: 0 
+    // items: []
+    items: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : []
 }
 
 const cart = createSlice({
     name: 'cart',
     initialState,
-    reducers:{
-        addItem:(state)=>{
-            state.value+=1;
+    reducers: {
+        addItem: (state, action) => {
+            // state.value+=1;
+            //yaha pe abh sara product ka data arha ha action.payload me or yeah state ke andar store
+            //bhi ho rahi ha state.items.push ke andar
+            //abh cartwali file me jake cart ke andar sari state nikalain ge product ki
+
+            console.log(action.payload);
+            state.items.push(action.payload)
+            localStorage.setItem('cart', JSON.stringify(state.items))
+
         },
-                removeItem:(state)=>{
-           state.value > 0 ? state.value-=1:null
+        removeItem: (state, action) => {
+            //    state.value > 0 ? state.value-=1:null
+            const cartData = state.items.filter(item => item.id != action.payload.id);
+            state.items = cartData;
+            localStorage.setItem('cart',JSON.stringify(cartData))
         },
-                clearAllItem:(state)=>{
-            state.value=0;
+        clearAllItem: (state) => {
+            state.value = 0;
         }
     }
 
 })
 
-export const {addItem,removeItem,clearAllItem} = cart.actions;
+export const { addItem, removeItem, clearAllItem } = cart.actions;
 export default cart.reducer
